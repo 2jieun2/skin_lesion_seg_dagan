@@ -17,11 +17,9 @@ class SkinDataset(Dataset):
 
     def __getitem__(self, idx):
         x = cv2.imread(self.image[idx], cv2.IMREAD_COLOR)
-        # x = cv2.cvtColor(x, cv2.COLOR_BGR2HSV)
         x = cv2.resize(x, (self.re_size[1], self.re_size[0]), interpolation=cv2.INTER_AREA)
         x = x / 255.
-        x_h, x_w, x_c = x.shape
-        x = torch.from_numpy(x).float().view(x_c, x_h, x_w)
+        x = torch.from_numpy(x).float().permute(2, 0, 1)
 
         y = cv2.imread(self.mask[idx], cv2.IMREAD_GRAYSCALE)
         origin_size = y.shape  # (height, width)
